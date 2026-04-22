@@ -2,33 +2,32 @@
 
 ## Main App
 - **Local Path**: /Volumes/ORICO-APFS/app/20260407/XRate
-- **Git**: git@github.com:asunnyboy861/XRate.git (to be created)
-- **Repo URL**: https://github.com/asunnyboy861/XRate (to be created)
+- **Git**: https://github.com/asunnyboy861/XRate.git
+- **Repo URL**: https://github.com/asunnyboy861/XRate
 
 ## Policy Pages (GitHub Pages)
 
 ### Support Page
-- **Git**: git@github.com:asunnyboy861/XRate-support.git (to be created)
-- **Repo URL**: https://github.com/asunnyboy861/XRate-support (to be created)
-- **Live URL**: https://asunnyboy861.github.io/XRate-support/ (to be deployed)
+- **Git**: https://github.com/asunnyboy861/XRate-support.git
+- **Repo URL**: https://github.com/asunnyboy861/XRate-support
+- **Live URL**: https://asunnyboy861.github.io/XRate-support/
 
 ### Privacy Policy
-- **Git**: git@github.com:asunnyboy861/XRate-privacy.git (to be created)
-- **Repo URL**: https://github.com/asunnyboy861/XRate-privacy (to be created)
-- **Live URL**: https://asunnyboy861.github.io/XRate-privacy/ (to be deployed)
+- **Git**: https://github.com/asunnyboy861/XRate-privacy.git
+- **Repo URL**: https://github.com/asunnyboy861/XRate-privacy
+- **Live URL**: https://asunnyboy861.github.io/XRate-privacy/
 
 ### Terms of Use
-- **Git**: git@github.com:asunnyboy861/XRate-terms.git (to be created)
-- **Repo URL**: https://github.com/asunnyboy861/XRate-terms (to be created)
-- **Live URL**: https://asunnyboy861.github.io/XRate-terms/ (to be deployed)
+- **Git**: https://github.com/asunnyboy861/XRate-terms.git
+- **Repo URL**: https://github.com/asunnyboy861/XRate-terms
+- **Live URL**: https://asunnyboy861.github.io/XRate-terms/
 
 ## Status
-- [ ] Main app repo created and pushed
-- [ ] Support page repo created and deployed
-- [ ] Privacy page repo created and deployed
-- [ ] Terms page repo created and deployed
+- [x] Main app repo created and pushed
+- [x] Support page repo created and deployed
+- [x] Privacy page repo created and deployed
+- [x] Terms page repo created and deployed
 
 ## Notes
-- All repos use GitHub Pages for hosting static HTML files
-- Each repo has a `.github/workflows/deploy.yml` for automatic deployment
-- Policy pages are referenced in SettingsView.swift
+- All policy pages are deployed from main branch using GitHub Pages
+- URLs are referenced in SettingsView.swift and PaywallView.swift
