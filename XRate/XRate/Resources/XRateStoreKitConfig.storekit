@@ -1,0 +1,99 @@
+{
+  "identifier" : "XRateStoreKitConfig",
+  "nonRenewingSubscriptions" : [],
+  "products" : [
+    {
+      "displayPrice" : "2.99",
+      "familyShareable" : false,
+      "internalID" : "6738880001",
+      "localizations" : [
+        {
+          "description" : "Access all XRate Pro features for one month",
+          "displayName" : "XRate Pro Monthly",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.zzoutuo.XRate.pro.monthly",
+      "referenceName" : "XRate Pro Monthly Subscription",
+      "subscription" : {
+        "adHocOffers" : [],
+        "codeOffers" : [],
+        "groupNumber" : 1,
+        "internalID" : "2138880001",
+        "introductoryOffer" : null,
+        "promotionalOffers" : [],
+        "renewalPrice" : "2.99",
+        "subscriptionGroupID" : "2138880000",
+        "subscriptionPeriod" : "P1M"
+      },
+      "type" : "RecurringSubscription"
+    },
+    {
+      "displayPrice" : "14.99",
+      "familyShareable" : false,
+      "internalID" : "6738880002",
+      "localizations" : [
+        {
+          "description" : "Access all XRate Pro features for one year - Save 58%",
+          "displayName" : "XRate Pro Yearly",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.zzoutuo.XRate.pro.yearly",
+      "referenceName" : "XRate Pro Yearly Subscription",
+      "subscription" : {
+        "adHocOffers" : [],
+        "codeOffers" : [],
+        "groupNumber" : 1,
+        "internalID" : "2138880002",
+        "introductoryOffer" : null,
+        "promotionalOffers" : [],
+        "renewalPrice" : "14.99",
+        "subscriptionGroupID" : "2138880000",
+        "subscriptionPeriod" : "P1Y"
+      },
+      "type" : "RecurringSubscription"
+    },
+    {
+      "displayPrice" : "29.99",
+      "familyShareable" : false,
+      "internalID" : "6738880003",
+      "localizations" : [
+        {
+          "description" : "One-time purchase for lifetime access to all XRate Pro features",
+          "displayName" : "XRate Pro Lifetime",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.zzoutuo.XRate.pro.lifetime",
+      "referenceName" : "XRate Pro Lifetime Purchase",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6738880000",
+    "_developerTeamID" : "ZZOUTUO",
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 768480000,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : []
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "2138880000",
+      "localizations" : [
+        {
+          "description" : "Unlock all XRate Pro features",
+          "displayName" : "XRate Pro",
+          "locale" : "en_US"
+        }
+      ],
+      "name" : "XRate Pro"
+    }
+  ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}
