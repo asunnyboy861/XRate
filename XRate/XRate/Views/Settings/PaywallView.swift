@@ -1,8 +1,14 @@
 import SwiftUI
+import StoreKit
 
 struct PaywallView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var selectedPlan: PlanType?
+    @State private var isLoading = false
+    @State private var showError = false
+    @State private var errorMessage = ""
+    
+    @State private var purchaseManager = PurchaseManager()
 
     enum PlanType: String, CaseIterable {
         case monthly, yearly, lifetime
@@ -28,6 +34,11 @@ struct PaywallView: View {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Close") { dismiss() }
                 }
+            }
+            .alert("Error", isPresented: $showError) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(errorMessage)
             }
         }
     }
@@ -74,14 +85,20 @@ struct PaywallView: View {
 
     private var plansSection: some View {
         VStack(spacing: 12) {
-            planCard(.monthly, title: "Monthly", price: "$2.99/mo", subtitle: nil)
-            planCard(.yearly, title: "Yearly", price: "$14.99/yr", subtitle: "Save 58%")
-            planCard(.lifetime, title: "Lifetime", price: "$29.99", subtitle: "One-time purchase")
+            if let product = purchaseManager.monthlyProduct {
+                planCard(.monthly, title: "Monthly", product: product, subtitle: nil)
+            }
+            if let product = purchaseManager.yearlyProduct {
+                planCard(.yearly, title: "Yearly", product: product, subtitle: "Save 58%")
+            }
+            if let product = purchaseManager.lifetimeProduct {
+                planCard(.lifetime, title: "Lifetime", product: product, subtitle: "One-time purchase")
+            }
         }
     }
 
     @ViewBuilder
-    private func planCard(_ plan: PlanType, title: String, price: String, subtitle: String?) -> some View {
+    private func planCard(_ plan: PlanType, title: String, product: Product, subtitle: String?) -> some View {
         Button {
             selectedPlan = plan
         } label: {
@@ -96,7 +113,7 @@ struct PaywallView: View {
                     }
                 }
                 Spacer()
-                Text(price)
+                Text(product.displayPrice)
                     .font(.system(size: 16, weight: .medium, design: .monospaced))
             }
             .padding(16)
@@ -114,20 +131,32 @@ struct PaywallView: View {
 
     private var subscribeButton: some View {
         Button {
+            Task {
+                await purchaseSelectedPlan()
+            }
         } label: {
-            Text("Subscribe")
-                .font(.system(size: 17, weight: .semibold))
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 16)
-                .background(selectedPlan == nil ? Color.gray : Color.accentColor, in: RoundedRectangle(cornerRadius: 12))
+            if isLoading {
+                ProgressView()
+                    .progressViewStyle(.circular)
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
+                    .background(Color.accentColor, in: RoundedRectangle(cornerRadius: 12))
+            } else {
+                Text("Subscribe")
+                    .font(.system(size: 17, weight: .semibold))
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
+                    .background(selectedPlan == nil ? Color.gray : Color.accentColor, in: RoundedRectangle(cornerRadius: 12))
+            }
         }
-        .disabled(selectedPlan == nil)
+        .disabled(selectedPlan == nil || isLoading)
     }
 
     private var legalSection: some View {
         VStack(spacing: 8) {
-            Text("Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless it is canceled at least 24 hours before the end of the current period.")
+            Text("Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless it is canceled at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions by going to your account settings on the App Store after purchase. Any unused portion of a free trial period, if offered, will be forfeited when the user purchases a subscription.")
                 .font(.system(size: 11))
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
@@ -138,10 +167,55 @@ struct PaywallView: View {
             }
             .font(.system(size: 12))
 
-            Button("Restore Purchases") {}
-                .font(.system(size: 12))
-                .foregroundStyle(Color.accentColor)
+            Button("Restore Purchases") {
+                Task {
+                    await restorePurchases()
+                }
+            }
+            .font(.system(size: 12))
+            .foregroundStyle(Color.accentColor)
         }
         .padding(.top, 8)
+    }
+    
+    private func purchaseSelectedPlan() async {
+        guard let plan = selectedPlan else { return }
+        
+        isLoading = true
+        defer { isLoading = false }
+        
+        let product: Product?
+        switch plan {
+        case .monthly:
+            product = purchaseManager.monthlyProduct
+        case .yearly:
+            product = purchaseManager.yearlyProduct
+        case .lifetime:
+            product = purchaseManager.lifetimeProduct
+        }
+        
+        guard let productToPurchase = product else { return }
+        
+        let success = await purchaseManager.purchase(productToPurchase)
+        if success {
+            dismiss()
+        } else if let error = purchaseManager.errorMessage {
+            errorMessage = error
+            showError = true
+        }
+    }
+    
+    private func restorePurchases() async {
+        isLoading = true
+        defer { isLoading = false }
+        
+        await purchaseManager.restorePurchases()
+        
+        if purchaseManager.isPro {
+            dismiss()
+        } else if let error = purchaseManager.errorMessage {
+            errorMessage = error
+            showError = true
+        }
     }
 }
